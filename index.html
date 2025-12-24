@@ -5,78 +5,249 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Circles - Next-Gen Social</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;padding:20px;color:#333}
-.nav{background:#fff;border-radius:16px;padding:20px 30px;display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;box-shadow:0 4px 20px rgba(0,0,0,.1)}
-.logo{font-size:28px;font-weight:bold;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.budget{display:flex;gap:12px;align-items:center;font-size:14px;color:#666}
-.bar{width:200px;height:8px;background:#e0e0e0;border-radius:4px;overflow:hidden}
-.fill{height:100%;background:linear-gradient(90deg,#4ade80 0%,#22c55e 100%);border-radius:4px;transition:width .3s}
-.spheres{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:20px}
-.sphere{background:#fff;border:3px solid transparent;border-radius:16px;padding:25px 20px;cursor:pointer;font-size:16px;font-weight:600;transition:all .3s;box-shadow:0 2px 10px rgba(0,0,0,.05);text-align:center}
-.sphere:hover{transform:translateY(-3px);box-shadow:0 6px 25px rgba(0,0,0,.15)}
-.sphere.active{border-color:#667eea;background:linear-gradient(135deg,rgba(102,126,234,.15) 0%,rgba(118,75,162,.15) 100%)}
-#content{background:#fff;border-radius:16px;padding:35px;min-height:600px;box-shadow:0 4px 20px rgba(0,0,0,.1);animation:fadeIn .4s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-h1{font-size:36px;margin-bottom:12px}
-.subtitle{color:#666;font-size:16px;margin-bottom:30px;padding-bottom:20px;border-bottom:2px solid #f0f0f0}
-.post{border:1px solid #e0e0e0;border-radius:12px;padding:22px;margin-bottom:20px;transition:all .3s}
-.post:hover{box-shadow:0 4px 16px rgba(0,0,0,.1);transform:translateY(-2px)}
-.post h3{margin-bottom:12px;font-size:17px;color:#333}
-.post p{line-height:1.7;color:#555}
-.badge{background:#d1fae5;color:#065f46;padding:4px 10px;border-radius:6px;font-size:13px;margin-left:8px}
-.tribe-card{border:2px solid #e0e0e0;border-radius:12px;padding:22px;margin-bottom:18px;cursor:pointer;transition:all .3s}
-.tribe-card:hover{border-color:#667eea;transform:translateY(-3px);box-shadow:0 6px 20px rgba(102,126,234,.25)}
-.tribe-card h3{margin-bottom:10px;font-size:19px}
-.tribe-card p{color:#666;font-size:14px;margin-bottom:6px}
-.message{padding:14px 18px;border-radius:12px;margin-bottom:12px;max-width:70%;animation:slideIn .3s ease}
-@keyframes slideIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
-.message.sent{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;margin-left:auto}
-.message.received{background:#f0f0f0;color:#333}
-.encryption-badge{background:#d1fae5;color:#065f46;padding:12px 18px;border-radius:10px;font-size:14px;margin-bottom:25px;display:inline-block}
-.canvas-post{border:1px solid #e0e0e0;border-radius:12px;overflow:hidden;margin-bottom:25px;transition:all .3s}
-.canvas-post:hover{box-shadow:0 6px 20px rgba(0,0,0,.12);transform:translateY(-2px)}
-.canvas-post img{width:100%;height:350px;object-fit:cover;display:block}
-.canvas-post p{padding:18px;line-height:1.7;color:#333}
-.footer{text-align:center;color:#fff;margin-top:40px;padding:20px;font-size:14px;opacity:.9}
-@media (max-width:768px){.spheres{grid-template-columns:repeat(2,1fr)}.budget{display:none}#content{padding:20px}}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.nav {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: bold;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.spheres {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.sphere {
+  background: white;
+  border: 3px solid transparent;
+  border-radius: 16px;
+  padding: 25px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  text-align: center;
+}
+
+.sphere:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+}
+
+.sphere.active {
+  border-color: #667eea;
+  background: rgba(102,126,234,0.15);
+}
+
+#content {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  min-height: 500px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+h1 {
+  font-size: 32px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.subtitle {
+  color: #666;
+  margin-bottom: 25px;
+  font-size: 15px;
+}
+
+.post {
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 18px;
+  transition: all 0.3s;
+}
+
+.post:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+
+.post h3 {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.post p {
+  line-height: 1.6;
+  color: #555;
+}
+
+.badge {
+  background: #d1fae5;
+  color: #065f46;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  margin-left: 8px;
+}
+
+.tribe-card {
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.tribe-card:hover {
+  border-color: #667eea;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(102,126,234,0.25);
+}
+
+.tribe-card h3 {
+  margin-bottom: 8px;
+  font-size: 18px;
+}
+
+.tribe-card p {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.message {
+  padding: 14px 18px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  max-width: 75%;
+}
+
+.message.sent {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  margin-left: auto;
+}
+
+.message.received {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.info-box {
+  background: #d1fae5;
+  color: #065f46;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.canvas-post {
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.canvas-post img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  display: block;
+}
+
+.canvas-post p {
+  padding: 15px;
+  line-height: 1.6;
+}
+
+.footer {
+  text-align: center;
+  color: white;
+  margin-top: 30px;
+  padding: 15px;
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  .spheres {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
 </style>
 </head>
 <body>
-<nav class="nav">
-<div class="logo">⭕ Circles</div>
-<div class="budget">
-<span>Attention: <strong>21/60 min</strong></span>
-<div class="bar"><div class="fill" style="width:35%"></div></div>
-</div>
-</nav>
-<div class="spheres">
-<button class="sphere active" onclick="show('commons')">🌍 The Commons</button>
-<button class="sphere" onclick="show('tribes')">👥 Tribes</button>
-<button class="sphere" onclick="show('vault')">🔒 Vault</button>
-<button class="sphere" onclick="show('canvas')">🎨 Canvas</button>
-</div>
-<main id="content"></main>
-<div class="footer">
-<p>✨ Circles - Where authenticity meets community ✨</p>
-<p>Built with psychology-first design</p>
-</div>
-<script>
-const d={
-commons:`<h1>🌍 The Commons</h1><p class="subtitle">Public discourse with authenticity</p><div class="post"><h3>Sarah Chen <span class="badge">🏆 Climate Expert</span></h3><p>New research shows renewable energy adoption accelerating faster than predicted...</p></div><div class="post"><h3>Marcus Johnson</h3><p>The psychology behind procrastination isn't about laziness—it's emotional regulation...</p></div><div class="post"><h3>Dr. Lisa Park <span class="badge">🏆 Neuroscience</span></h3><p>Fascinating study on how social media affects dopamine pathways...</p></div>`,
-tribes:`<h1>👥 Tribes</h1><p class="subtitle">Your micro-communities (5-150 members)</p><div class="tribe-card"><h3>🚀 Indie Makers</h3><p><strong>47 members</strong> • Building products that matter</p><p>🔥 12 active discussions</p><p>📅 Meetup tomorrow 7pm</p></div><div class="tribe-card"><h3>📚 Book Club</h3><p><strong>23 members</strong> • Deep reading, deeper conversations</p><p>📖 Currently: Atomic Habits</p><p>💬 8 new comments</p></div><div class="tribe-card"><h3>🧘 Mindful Living</h3><p><strong>31 members</strong> • Mental health & wellness</p><p>🎯 Weekly challenge active</p><p>🌱 Health score: 92%</p></div><div class="tribe-card"><h3>🎮 Game Developers</h3><p><strong>89 members</strong> • Creating amazing games</p><p>🎨 5 projects in progress</p><p>💡 Weekly showcase Friday</p></div>`,
-vault:`<h1>🔒 Vault</h1><p class="subtitle">Zero-knowledge encrypted conversations</p><div class="encryption-badge">🔐 End-to-end encrypted • Auto-delete in 24h</div><div class="message received"><p>Hey! Coffee later?</p></div><div class="message sent"><p>Absolutely! 3pm at the new place?</p></div><div class="message received"><p>Perfect! I'll bring those books 📚</p></div><div class="message sent"><p>Can't wait! See you then 🎉</p></div><div style="margin-top:30px;padding:15px;background:#fef3c7;border-radius:10px;color:#92400e"><strong>🛡️ Privacy Active:</strong><ul style="margin-top:10px;margin-left:20px"><li>Trust Level: ⭐⭐⭐ Close Friend</li><li>Emotional tone detection ON</li><li>Screenshot protection ON</li><li>Disappears in 23h 47m</li></ul></div>`,
-canvas:`<h1>🎨 Canvas</h1><p class="subtitle">Raw, authentic expression • Anti-comparison mode ON</p><div class="canvas-post"><img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=600&fit=crop" alt="Mountain"><p><strong>Lily Park</strong> • Morning hike. No filter, just grateful 🌄</p></div><div class="canvas-post"><img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1200&h=600&fit=crop" alt="Beach"><p><strong>You + Friends</strong> • Summer adventures 2024 🌊☀️ Collaborative memory!</p></div><div class="canvas-post"><img src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=1200&h=600&fit=crop" alt="Ocean"><p><strong>Marcus</strong> • Sometimes you just need to breathe 💙</p></div><div style="margin-top:25px;padding:18px;background:#dbeafe;border-radius:10px;color:#1e40af"><strong>💙 Your Journey:</strong><ul style="margin-top:10px;margin-left:20px"><li>+12 genuine moments this week</li><li>3 collaborative creations</li><li>78% more authentic than before</li><li>No comparison anxiety 🎉</li></ul></div>`
-};
-function show(id){
-document.querySelectorAll('.sphere').forEach(b=>b.classList.remove('active'));
-event.target.classList.add('active');
-const c=document.getElementById('content');
-c.style.opacity='0';
-setTimeout(()=>{c.innerHTML=d[id];c.style.opacity='1'},150);
-}
-document.getElementById('content').innerHTML=d.commons;
-console.log('🎉 Circles loaded!');
-</script>
+  <nav class="nav">
+    <div class="logo">⭕ Circles</div>
+  </nav>
+  
+  <div class="spheres">
+    <button class="sphere active" onclick="showSphere('commons')">🌍 The Commons</button>
+    <button class="sphere" onclick="showSphere('tribes')">👥 Tribes</button>
+    <button class="sphere" onclick="showSphere('vault')">🔒 Vault</button>
+    <button class="sphere" onclick="showSphere('canvas')">🎨 Canvas</button>
+  </div>
+  
+  <main id="content"></main>
+  
+  <div class="footer">
+    <p>✨ Circles - Where authenticity meets community ✨</p>
+  </div>
+  
+  <script>
+    var sphereData = {
+      commons: "<h1>🌍 The Commons</h1><p class=\"subtitle\">Public discourse with authenticity and constructive debate</p><div class=\"post\"><h3>Sarah Chen <span class=\"badge\">🏆 Climate Expert</span></h3><p>New research shows renewable energy adoption is accelerating faster than predicted. Here is why this matters for policy makers and what we can learn from early adopters...</p></div><div class=\"post\"><h3>Marcus Johnson</h3><p>The psychology behind why we procrastinate is not about laziness—it is about emotional regulation. When we avoid tasks, we are often avoiding the negative feelings associated with them.</p></div><div class=\"post\"><h3>Dr. Lisa Park <span class=\"badge\">🏆 Neuroscience</span></h3><p>Fascinating new study on how social media affects dopamine pathways. The results challenge everything we thought we knew about digital addiction.</p></div>",
+      
+      tribes: "<h1>👥 Tribes</h1><p class=\"subtitle\">Your micro-communities (5-150 members)</p><div class=\"tribe-card\"><h3>🚀 Indie Makers</h3><p><strong>47 members</strong> • Building products that matter</p><p>🔥 12 active discussions</p><p>📅 Meetup tomorrow at 7pm</p></div><div class=\"tribe-card\"><h3>📚 Book Club</h3><p><strong>23 members</strong> • Deep reading, deeper conversations</p><p>📖 Currently reading: Atomic Habits</p><p>💬 8 new comments</p></div><div class=\"tribe-card\"><h3>🧘 Mindful Living</h3><p><strong>31 members</strong> • Mental health and wellness</p><p>🎯 Weekly challenge active</p><p>🌱 Community health: 92%</p></div><div class=\"tribe-card\"><h3>🎮 Game Developers</h3><p><strong>89 members</strong> • Creating amazing games</p><p>🎨 5 projects in progress</p><p>💡 Weekly showcase Friday</p></div>",
+      
+      vault: "<h1>🔒 Vault</h1><p class=\"subtitle\">Zero-knowledge encrypted conversations</p><div class=\"info-box\">🔐 End-to-end encrypted • Messages auto-delete in 24h</div><div class=\"message received\"><p>Hey! Are we still on for coffee later?</p></div><div class=\"message sent\"><p>Absolutely! The new place on 5th street at 3pm?</p></div><div class=\"message received\"><p>Perfect! I will bring those book recommendations 📚</p></div><div class=\"message sent\"><p>Awesome! Cannot wait to hear about your new project 🚀</p></div><div class=\"message received\"><p>See you then! 🎉</p></div>",
+      
+      canvas: "<h1>🎨 Canvas</h1><p class=\"subtitle\">Raw, authentic, creative expression</p><div class=\"canvas-post\"><img src=\"https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=600&fit=crop\" alt=\"Mountain sunrise\"><p><strong>Lily Park</strong> • Morning hike before work. No filter, no perfection, just grateful for this moment 🌄</p></div><div class=\"canvas-post\"><img src=\"https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1200&h=600&fit=crop\" alt=\"Beach sunset\"><p><strong>You + Friends</strong> • Our summer adventures 2024 🌊☀️ Collaborative memory from our beach trip!</p></div><div class=\"canvas-post\"><img src=\"https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=1200&h=600&fit=crop\" alt=\"Ocean waves\"><p><strong>Marcus</strong> • Sometimes you just need to disconnect and breathe. Raw moment from today 💙</p></div>"
+    };
+    
+    function showSphere(sphereId) {
+      var buttons = document.querySelectorAll('.sphere');
+      buttons.forEach(function(btn) {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+      
+      var contentDiv = document.getElementById('content');
+      contentDiv.innerHTML = sphereData[sphereId];
+    }
+    
+    document.getElementById('content').innerHTML = sphereData.commons;
+    
+    console.log('🎉 Circles app loaded successfully!');
+  </script>
 </body>
 </html>
