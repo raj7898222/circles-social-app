@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Circles - Next-Gen Social Ecosystem</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  padding: 20px;
+  color: #333;
+}
+
+.nav {
+  background: white;
+  border-radius: 16px;
+  padding: 20px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: bold;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.budget {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 14px;
+  color: #666;
+}
+
+.bar {
+  width: 200px;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4ade80 0%, #22c55e 100%);
+  border-radius: 4px;
+  transition: width 0.3s;
+}
+
+.spheres {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.sphere {
+  background: white;
+  border: 3px solid transparent;
+  border-radius: 16px;
+  padding: 25px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  text-align: center;
+}
+
+.sphere:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+}
+
+.sphere.active {
+  border-color: #667eea;
+  background: linear-gradient(135deg, rgba(102,126,234,0.15) 0%, rgba(118,75,162,0.15) 100%);
+}
+
+#content {
+  background: white;
+  border-radius: 16px;
+  padding: 35px;
+  min-height: 600px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+h1 {
+  font-size: 36px;
+  margin-bottom: 12px;
+}
+
+.subtitle {
+  color: #666;
+  font-size: 16px;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.post {
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 22px;
+  margin-bottom: 20px;
+  transition: all 0.3s;
+}
+
+.post:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+
+.post h3 {
+  margin-bottom: 12px;
+  font-size: 17px;
+  color: #333;
+}
+
+.post p {
+  line-height: 1.7;
+  color: #555;
+}
+
+.badge {
+  background: #d1fae5;
+  color: #065f46;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-left: 8px;
+}
+
+.tribe-card {
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 22px;
+  margin-bottom: 18px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.tribe-card:hover {
+  border-color: #667eea;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(102,126,234,0.25);
+}
+
+.tribe-card h3 {
+  margin-bottom: 10px;
+  font-size: 19px;
+}
+
+.tribe-card p {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.message {
+  padding: 14px 18px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  max-width: 70%;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.message.sent {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  margin-left: auto;
+  animation: slideInRight 0.3s ease;
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.message.received {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.encryption-badge {
+  background: #d1fae5;
+  color: #065f46;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  margin-bottom: 25px;
+  display: inline-block;
+}
+
+.canvas-post {
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 25px;
+  transition: all 0.3s;
+}
+
+.canvas-post:hover {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  transform: translateY(-2px);
+}
+
+.canvas-post img {
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+  display: block;
+}
+
+.canvas-post p {
+  padding: 18px;
+  line-height: 1.7;
+  color: #333;
+}
+
+.footer {
+  text-align: center;
+  color: white;
+  margin-top: 40px;
+  padding: 20px;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .spheres {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .budget {
+    display: none;
+  }
+  #content {
+    padding: 20px;
+  }
+}
+</style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="logo">⭕ Circles</div>
+    <div class="budget">
+      <span>Attention Budget: <strong>21/60 min</strong></span>
+      <div class="bar">
+        <div class="fill" style="width: 35%"></div>
+      </div>
+    </div>
+  </nav>
+  
+  <div class="spheres">
+    <button class="sphere active" onclick="showSphere('commons')">🌍 The Commons</button>
+    <button class="sphere" onclick="showSphere('tribes')">👥 Tribes</button>
+    <button class="sphere" onclick="showSphere('vault')">🔒 Vault</button>
+    <button class="sphere" onclick="showSphere('canvas')">🎨 Canvas</button>
+  </div>
+  
+  <main id="content"></main>
+  
+  <div class="footer">
+    <p>✨ Circles - Where authenticity meets community ✨</p>
+    <p>Built with psychology-first design principles</p>
+  </div>
+  
+  <script>
+    const sphereData = {
+      commons: `
+        <h1>🌍 The Commons</h1>
+        <p class="subtitle">Public discourse with authenticity and constructive debate</p>
+        
+        <div class="post">
+          <h3>Sarah Chen <span class="badge">🏆 Climate Expert</span></h3>
+          <p>New research shows renewable energy adoption is accelerating faster than predicted. Here's why this matters for policy makers and what we can learn from early adopters in Scandinavia...</p>
+        </div>
+        
+        <div class="post">
+          <h3>Marcus Johnson</h3>
+          <p>The psychology behind why we procrastinate isn't about laziness—it's about emotional regulation. When we avoid tasks, we're often avoiding the negative feelings associated with them. Thread 🧵</p>
+        </div>
+        
+        <div class="post">
+          <h3>Dr. Lisa Park <span class="badge">🏆 Neuroscience Expert</span></h3>
+          <p>Fascinating new study on how social media affects dopamine pathways. The results challenge everything we thought we knew about digital addiction and offer hope for healthier platform design.</p>
+        </div>
+        
+        <div class="post">
+          <h3>Alex Rivera</h3>
+          <p>Just launched my first indie product after 6 months of building in public! The support from this community has been incredible. Here's what I learned about sustainable growth...</p>
+        </div>
+      `,
+      
+      tribes: `
+        <h1>👥 Tribes</h1>
+        <p class="subtitle">Your micro-communities (5-150 members) based on shared purpose</p>
+        
+        <div class="tribe-card">
+          <h3>🚀 Indie Makers</h3>
+          <p><strong>47 members</strong> • Building products that matter</p>
+          <p>🔥 12 active discussions</p>
+          <p>📅 Virtual meetup tomorrow at 7pm EST</p>
+          <p>💡 Current focus: Sustainable monetization strategies</p>
+        </div>
+        
+        <div class="tribe-card">
+          <h3>📚 Book Club Enthusiasts</h3>
+          <p><strong>23 members</strong> • Deep reading, deeper conversations</p>
+          <p>📖 Currently reading: Atomic Habits by James Clear</p>
+          <p>💬 8 new thoughtful comments</p>
+          <p>🎯 Next book vote happening Friday</p>
+        </div>
+        
+        <div class="tribe-card">
+          <h3>🧘 Mindful Living</h3>
+          <p><strong>31 members</strong> • Mental health & wellness journey</p>
+          <p>🎯 Weekly mindfulness challenge active</p>
+          <p>🤝 3 members requested support check-ins</p>
+          <p>🌱 Community health score: 92%</p>
+        </div>
+        
+        <div class="tribe-card">
+          <h3>🎮 Game Developers</h3>
+          <p><strong>89 members</strong> • Creating amazing gaming experiences</p>
+          <p>🎨 5 projects currently in development</p>
+          <p>💡 Weekly showcase every Friday</p>
+          <p>🔧 Tech stack discussions trending</p>
+        </div>
+        
+        <div class="tribe-card">
+          <h3>🌱 Urban Gardeners</h3>
+          <p><strong>56 members</strong> • Growing food in small spaces</p>
+          <p>🌿 Spring planting season tips shared</p>
+          <p>📸 Photo challenge: Best harvest of the week</p>
+          <p>🤝 Seed exchange program active</p>
+        </div>
+      `,
+      
+      vault: `
+        <h1>🔒 Vault</h1>
+        <p class="subtitle">Zero-knowledge encrypted conversations</p>
+        <div class="encryption-badge">🔐 End-to-end encrypted • Messages auto-delete in 24h • No screenshots allowed</div>
+        
+        <div class="message received">
+          <p>Hey! Are we still on for coffee later?</p>
+        </div>
+        
+        <div class="message sent">
+          <p>Absolutely! The new place on 5th street at 3pm?</p>
+        </div>
+        
+        <div class="message received">
+          <p>Perfect! I'll bring those book recommendations we talked about 📚</p>
+        </div>
+        
+        <div class="message sent">
+          <p>Awesome! Can't wait to hear about your new project too 🚀</p>
+        </div>
+        
+        <div class="message received">
+          <p>See you then! 🎉</p>
+        </div>
+        
+        <div style="margin-top: 30px; padding: 15px; background: #fef3c7; border-radius: 10px; color: #92400e;">
+          <strong>🛡️ Privacy Features Active:</strong>
+          <ul style="margin-top: 10px; margin-left: 20px;">
+            <li>Trust Level: ⭐⭐⭐ Close Friend</li>
+            <li>Emotional tone detection enabled</li>
+            <li>Context shields preventing forwarding</li>
+            <li>Disappearing messages in 23h 47m</li>
+          </ul>
+        </div>
+      `,
+      
+      canvas: `
+        <h1>🎨 Canvas</h1>
+        <p class="subtitle">Raw, authentic, creative expression • Anti-comparison mode enabled</p>
+        
+        <div class="canvas-post">
+          <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=600&fit=crop" alt="Mountain sunrise">
+          <p><strong>Lily Park</strong> • Morning hike before work. No filter, no perfection, just grateful for this moment 🌄 The air was crisp and the view reminded me why I love living here.</p>
+        </div>
+        
+        <div class="canvas-post">
+          <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1200&h=600&fit=crop" alt="Beach sunset">
+          <p><strong>You + Alex + Emma</strong> • Our summer adventures 2024 🌊☀️🏖️ Collaborative memory weaving from our beach trip. Three perspectives, one amazing weekend!</p>
+        </div>
+        
+        <div class="canvas-post">
+          <img src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=1200&h=600&fit=crop" alt="Ocean waves">
+          <p><strong>Marcus Chen</strong> • Sometimes you just need to disconnect and breathe. Raw moment from today 💙 No agenda, no productivity goals, just being present.</p>
+        </div>
+        
+        <div class="canvas-post">
+          <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=1200&h=600&fit=crop" alt="Forest path">
+          <p><strong>Sarah Kim</strong> • Found this hidden trail today. Getting lost was exactly what I needed 🌲✨ Reminder: not all who wander are lost, some are just exploring.</p>
+        </div>
+        
+        <div style="margin-top: 25px; padding: 18px; background: #dbeafe; border-radius: 10px; color: #1e40af;">
+          <strong>💙 Your Authenticity Journey:</strong>
+          <ul style="margin-top: 10px; margin-left: 20px;">
+            <li>+12 genuine moments shared this week</li>
+            <li>3 collaborative creations with friends</li>
+            <li>Growth metric: More authentic than 78% of your past posts</li>
+            <li>No comparison anxiety detected 🎉</li>
+          </ul>
+        </div>
+      `
+    };
+    
+    function showSphere(sphereId) {
+      // Update active button
+      document.querySelectorAll('.sphere').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+      
+      // Update content with animation
+      const contentDiv = document.getElementById('content');
+      contentDiv.style.opacity = '0';
+      
+      setTimeout(() => {
+        contentDiv.innerHTML = sphereData[sphereId];
+        contentDiv.style.opacity = '1';
+      }, 150);
+    }
+    
+    // Initialize with The Commons
+    document.getElementById('content').innerHTML = sphereData.commons;
+    
+    // Simulate attention budget increase
+    let minutes = 21;
+    setInterval(() => {
+      minutes += 0.5;
+      const percentage = (minutes / 60) * 100;
+      const fillElement = document.querySelector('.fill');
+      const budgetText = document.querySelector('.budget strong');
+      
+      if (fillElement && budgetText) {
+        fillElement.style.width = percentage + '%';
+        budgetText.textContent = Math.floor(minutes) + '/60 min';
+        
+        // Change color based on usage
+        if (percentage > 80) {
+          fillElement.style.background = 'linear-gradient(90deg, #ef4444 0%, #dc2626 100%)';
+        } else if (percentage > 60) {
+          fillElement.style.background = 'linear-gradient(90deg, #f59e0b 0%, #d97706 100%)';
+        }
+      }
+    }, 30000); // Update every 30 seconds
+    
+    console.log('🎉 Circles - Next-Gen Social Ecosystem loaded!');
+    console.log('Navigate between: The Commons | Tribes | Vault | Canvas');
+  </script>
+</body>
+</html>
