@@ -3,251 +3,805 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Circles - Next-Gen Social</title>
+<title>Circles - Social Network</title>
 <style>
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+  --accent: #f59e0b;
+  --bg: #fafafa;
+  --card: #ffffff;
+  --text: #262626;
+  --text-light: #8e8e8e;
+  --border: #dbdbdb;
+  --success: #22c55e;
+  --danger: #ef4444;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
-  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  padding-bottom: 70px;
+  overflow-x: hidden;
 }
 
-.nav {
-  background: white;
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+/* Top Header */
+.header {
+  position: sticky;
+  top: 0;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
 }
 
 .logo {
-  font-size: 28px;
-  font-weight: bold;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-size: 24px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
-.spheres {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
-  margin-bottom: 20px;
+.header-icons {
+  display: flex;
+  gap: 20px;
 }
 
-.sphere {
-  background: white;
-  border: 3px solid transparent;
-  border-radius: 16px;
-  padding: 25px 20px;
+.icon-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
   cursor: pointer;
-  font-size: 16px;
-  font-weight: 600;
-  transition: all 0.3s;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-  text-align: center;
-}
-
-.sphere:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 25px rgba(0,0,0,0.15);
-}
-
-.sphere.active {
-  border-color: #667eea;
-  background: rgba(102,126,234,0.15);
-}
-
-#content {
-  background: white;
-  border-radius: 16px;
-  padding: 30px;
-  min-height: 500px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-}
-
-h1 {
-  font-size: 32px;
-  margin-bottom: 20px;
-  color: #333;
-}
-
-.subtitle {
-  color: #666;
-  margin-bottom: 25px;
-  font-size: 15px;
-}
-
-.post {
-  border: 1px solid #e0e0e0;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 18px;
-  transition: all 0.3s;
-}
-
-.post:hover {
-  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-  transform: translateY(-2px);
-}
-
-.post h3 {
-  margin-bottom: 10px;
-  font-size: 16px;
-  color: #333;
-}
-
-.post p {
-  line-height: 1.6;
-  color: #555;
+  position: relative;
 }
 
 .badge {
-  background: #d1fae5;
-  color: #065f46;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 12px;
-  margin-left: 8px;
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--danger);
+  color: white;
+  font-size: 10px;
+  padding: 2px 5px;
+  border-radius: 10px;
+  font-weight: 600;
 }
 
-.tribe-card {
-  border: 2px solid #e0e0e0;
+/* Stories */
+.stories {
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 0;
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+}
+
+.stories::-webkit-scrollbar {
+  display: none;
+}
+
+.story {
+  display: inline-block;
+  text-align: center;
+  margin: 0 8px;
+  cursor: pointer;
+}
+
+.story-ring {
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, var(--accent), var(--danger), var(--primary));
+  padding: 3px;
+  margin: 0 auto 6px;
+}
+
+.story-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 3px solid var(--card);
+  object-fit: cover;
+}
+
+.story-name {
+  font-size: 12px;
+  color: var(--text);
+  max-width: 66px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Feed */
+.feed {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.post {
+  background: var(--card);
+  border: 1px solid var(--border);
+  margin-bottom: 12px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  gap: 12px;
+}
+
+.post-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.post-user {
+  flex: 1;
+}
+
+.post-username {
+  font-weight: 600;
+  font-size: 14px;
+  display: block;
+}
+
+.post-time {
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+.post-image {
+  width: 100%;
+  display: block;
+  max-height: 600px;
+  object-fit: cover;
+}
+
+.post-actions {
+  display: flex;
+  padding: 8px 16px;
+  gap: 16px;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.action-btn:active {
+  transform: scale(0.9);
+}
+
+.action-btn.liked {
+  color: var(--danger);
+}
+
+.post-likes {
+  padding: 0 16px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.post-caption {
+  padding: 0 16px 12px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.post-caption strong {
+  font-weight: 600;
+  margin-right: 6px;
+}
+
+.post-comments {
+  padding: 0 16px 12px;
+  font-size: 14px;
+  color: var(--text-light);
+  cursor: pointer;
+}
+
+/* Messages View */
+.messages-container {
+  display: none;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.messages-container.active {
+  display: block;
+}
+
+.chat-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  gap: 12px;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.chat-item:active {
+  background: var(--bg);
+}
+
+.chat-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.chat-info {
+  flex: 1;
+}
+
+.chat-name {
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+
+.chat-message {
+  font-size: 14px;
+  color: var(--text-light);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-time {
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+.unread-badge {
+  background: var(--primary);
+  color: white;
+  font-size: 12px;
+  padding: 2px 8px;
   border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+/* Groups View */
+.groups-container {
+  display: none;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.groups-container.active {
+  display: block;
+}
+
+.group-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
   cursor: pointer;
   transition: all 0.3s;
 }
 
-.tribe-card:hover {
-  border-color: #667eea;
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(102,126,234,0.25);
+.group-card:active {
+  transform: scale(0.98);
 }
 
-.tribe-card h3 {
-  margin-bottom: 8px;
-  font-size: 18px;
-}
-
-.tribe-card p {
-  color: #666;
-  font-size: 14px;
-  margin-bottom: 5px;
-}
-
-.message {
-  padding: 14px 18px;
-  border-radius: 12px;
+.group-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   margin-bottom: 12px;
-  max-width: 75%;
 }
 
-.message.sent {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  margin-left: auto;
-}
-
-.message.received {
-  background: #f0f0f0;
-  color: #333;
-}
-
-.info-box {
-  background: #d1fae5;
-  color: #065f46;
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  font-size: 14px;
-}
-
-.canvas-post {
-  border: 1px solid #e0e0e0;
+.group-icon {
+  width: 48px;
+  height: 48px;
   border-radius: 12px;
-  overflow: hidden;
-  margin-bottom: 20px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
 }
 
-.canvas-post img {
-  width: 100%;
-  height: 300px;
-  object-fit: cover;
+.group-name {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.group-members {
+  font-size: 13px;
+  color: var(--text-light);
+}
+
+.group-activity {
+  font-size: 14px;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.group-stats {
+  display: flex;
+  gap: 16px;
+  font-size: 13px;
+  color: var(--text-light);
+}
+
+/* Profile View */
+.profile-container {
+  display: none;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.profile-container.active {
   display: block;
 }
 
-.canvas-post p {
-  padding: 15px;
-  line-height: 1.6;
+.profile-header {
+  background: var(--card);
+  padding: 24px 16px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
 }
 
-.footer {
+.profile-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  margin: 0 auto 16px;
+  object-fit: cover;
+  border: 3px solid var(--border);
+}
+
+.profile-name {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.profile-bio {
+  font-size: 14px;
+  color: var(--text-light);
+  margin-bottom: 16px;
+}
+
+.profile-stats {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-bottom: 16px;
+}
+
+.stat {
   text-align: center;
+}
+
+.stat-value {
+  font-size: 18px;
+  font-weight: 700;
+  display: block;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--text-light);
+}
+
+.profile-btn {
+  background: var(--primary);
   color: white;
-  margin-top: 30px;
-  padding: 15px;
+  border: none;
+  padding: 10px 32px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
   font-size: 14px;
 }
 
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  padding: 2px;
+}
+
+.profile-grid-item {
+  aspect-ratio: 1;
+  background: var(--border);
+  cursor: pointer;
+}
+
+.profile-grid-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Bottom Navigation */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 0;
+  z-index: 100;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 16px;
+  color: var(--text);
+  transition: color 0.2s;
+}
+
+.nav-item.active {
+  color: var(--primary);
+}
+
+.nav-icon {
+  font-size: 24px;
+}
+
+.nav-label {
+  font-size: 10px;
+  font-weight: 500;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.post {
+  animation: fadeIn 0.4s ease;
+}
+
+/* Responsive */
 @media (min-width: 768px) {
-  .spheres {
-    grid-template-columns: repeat(4, 1fr);
+  .feed, .messages-container, .groups-container, .profile-container {
+    margin-top: 24px;
   }
 }
 </style>
 </head>
 <body>
-  <nav class="nav">
-    <div class="logo">⭕ Circles</div>
-  </nav>
-  
-  <div class="spheres">
-    <button class="sphere active" onclick="showSphere('commons')">🌍 The Commons</button>
-    <button class="sphere" onclick="showSphere('tribes')">👥 Tribes</button>
-    <button class="sphere" onclick="showSphere('vault')">🔒 Vault</button>
-    <button class="sphere" onclick="showSphere('canvas')">🎨 Canvas</button>
+
+<!-- Header -->
+<header class="header">
+  <div class="logo">⭕ Circles</div>
+  <div class="header-icons">
+    <button class="icon-btn">❤️<span class="badge">3</span></button>
+    <button class="icon-btn">💬<span class="badge">5</span></button>
   </div>
-  
-  <main id="content"></main>
-  
-  <div class="footer">
-    <p>✨ Circles - Where authenticity meets community ✨</p>
+</header>
+
+<!-- Stories -->
+<div class="stories" id="stories">
+  <div class="story">
+    <div class="story-ring"><img src="https://i.pravatar.cc/150?img=1" class="story-img" alt="Your Story"></div>
+    <div class="story-name">Your Story</div>
   </div>
+  <div class="story">
+    <div class="story-ring"><img src="https://i.pravatar.cc/150?img=2" class="story-img" alt="Sarah"></div>
+    <div class="story-name">Sarah</div>
+  </div>
+  <div class="story">
+    <div class="story-ring"><img src="https://i.pravatar.cc/150?img=3" class="story-img" alt="Alex"></div>
+    <div class="story-name">Alex</div>
+  </div>
+  <div class="story">
+    <div class="story-ring"><img src="https://i.pravatar.cc/150?img=4" class="story-img" alt="Emma"></div>
+    <div class="story-name">Emma</div>
+  </div>
+  <div class="story">
+    <div class="story-ring"><img src="https://i.pravatar.cc/150?img=5" class="story-img" alt="Marcus"></div>
+    <div class="story-name">Marcus</div>
+  </div>
+  <div class="story">
+    <div class="story-ring"><img src="https://i.pravatar.cc/150?img=6" class="story-img" alt="Lily"></div>
+    <div class="story-name">Lily</div>
+  </div>
+</div>
+
+<!-- Feed -->
+<div class="feed" id="feed">
+  <article class="post">
+    <div class="post-header">
+      <img src="https://i.pravatar.cc/150?img=10" class="post-avatar" alt="Sarah Chen">
+      <div class="post-user">
+        <span class="post-username">sarah_chen</span>
+        <span class="post-time">2 hours ago</span>
+      </div>
+      <button class="icon-btn">⋯</button>
+    </div>
+    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=600&fit=crop" class="post-image" alt="Post">
+    <div class="post-actions">
+      <button class="action-btn" onclick="toggleLike(this)">🤍</button>
+      <button class="action-btn">💬</button>
+      <button class="action-btn">📤</button>
+      <button class="action-btn" style="margin-left: auto">🔖</button>
+    </div>
+    <div class="post-likes">1,234 likes</div>
+    <div class="post-caption">
+      <strong>sarah_chen</strong> Morning hike before work! The view was absolutely breathtaking 🌄 #nature #hiking
+    </div>
+    <div class="post-comments">View all 47 comments</div>
+  </article>
+
+  <article class="post">
+    <div class="post-header">
+      <img src="https://i.pravatar.cc/150?img=11" class="post-avatar" alt="Alex Rivera">
+      <div class="post-user">
+        <span class="post-username">alex_rivera</span>
+        <span class="post-time">5 hours ago</span>
+      </div>
+      <button class="icon-btn">⋯</button>
+    </div>
+    <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=600&h=600&fit=crop" class="post-image" alt="Post">
+    <div class="post-actions">
+      <button class="action-btn" onclick="toggleLike(this)">🤍</button>
+      <button class="action-btn">💬</button>
+      <button class="action-btn">📤</button>
+      <button class="action-btn" style="margin-left: auto">🔖</button>
+    </div>
+    <div class="post-likes">2,891 likes</div>
+    <div class="post-caption">
+      <strong>alex_rivera</strong> Beach sunset therapy 🌊☀️ Sometimes you just need to disconnect and breathe
+    </div>
+    <div class="post-comments">View all 128 comments</div>
+  </article>
+
+  <article class="post">
+    <div class="post-header">
+      <img src="https://i.pravatar.cc/150?img=12" class="post-avatar" alt="Emma Park">
+      <div class="post-user">
+        <span class="post-username">emma_park</span>
+        <span class="post-time">8 hours ago</span>
+      </div>
+      <button class="icon-btn">⋯</button>
+    </div>
+    <img src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=600&h=600&fit=crop" class="post-image" alt="Post">
+    <div class="post-actions">
+      <button class="action-btn" onclick="toggleLike(this)">🤍</button>
+      <button class="action-btn">💬</button>
+      <button class="action-btn">📤</button>
+      <button class="action-btn" style="margin-left: auto">🔖</button>
+    </div>
+    <div class="post-likes">3,456 likes</div>
+    <div class="post-caption">
+      <strong>emma_park</strong> Ocean waves and good vibes 💙 Perfect way to end the week!
+    </div>
+    <div class="post-comments">View all 89 comments</div>
+  </article>
+</div>
+
+<!-- Messages -->
+<div class="messages-container" id="messages">
+  <div class="chat-item">
+    <img src="https://i.pravatar.cc/150?img=20" class="chat-avatar" alt="Sarah">
+    <div class="chat-info">
+      <div class="chat-name">Sarah Chen</div>
+      <div class="chat-message">Hey! Are we still on for coffee?</div>
+    </div>
+    <div>
+      <div class="chat-time">10m</div>
+      <div class="unread-badge">2</div>
+    </div>
+  </div>
+  <div class="chat-item">
+    <img src="https://i.pravatar.cc/150?img=21" class="chat-avatar" alt="Alex">
+    <div class="chat-info">
+      <div class="chat-name">Alex Rivera</div>
+      <div class="chat-message">Thanks for the recommendation!</div>
+    </div>
+    <div class="chat-time">2h</div>
+  </div>
+  <div class="chat-item">
+    <img src="https://i.pravatar.cc/150?img=22" class="chat-avatar" alt="Emma">
+    <div class="chat-info">
+      <div class="chat-name">Emma Park</div>
+      <div class="chat-message">See you tomorrow! 🎉</div>
+    </div>
+    <div class="chat-time">5h</div>
+  </div>
+  <div class="chat-item">
+    <img src="https://i.pravatar.cc/150?img=23" class="chat-avatar" alt="Marcus">
+    <div class="chat-info">
+      <div class="chat-name">Marcus Johnson</div>
+      <div class="chat-message">That sounds great!</div>
+    </div>
+    <div class="chat-time">1d</div>
+  </div>
+</div>
+
+<!-- Groups -->
+<div class="groups-container" id="groups">
+  <div class="group-card">
+    <div class="group-header">
+      <div class="group-icon">🚀</div>
+      <div>
+        <div class="group-name">Indie Makers</div>
+        <div class="group-members">47 members</div>
+      </div>
+    </div>
+    <div class="group-activity">Building products that matter</div>
+    <div class="group-stats">
+      <span>🔥 12 active discussions</span>
+      <span>📅 Meetup tomorrow</span>
+    </div>
+  </div>
+
+  <div class="group-card">
+    <div class="group-header">
+      <div class="group-icon">📚</div>
+      <div>
+        <div class="group-name">Book Club</div>
+        <div class="group-members">23 members</div>
+      </div>
+    </div>
+    <div class="group-activity">Currently reading: Atomic Habits</div>
+    <div class="group-stats">
+      <span>💬 8 new comments</span>
+      <span>📖 Chapter 5 discussion</span>
+    </div>
+  </div>
+
+  <div class="group-card">
+    <div class="group-header">
+      <div class="group-icon">🧘</div>
+      <div>
+        <div class="group-name">Mindful Living</div>
+        <div class="group-members">31 members</div>
+      </div>
+    </div>
+    <div class="group-activity">Mental health and wellness journey</div>
+    <div class="group-stats">
+      <span>🎯 Weekly challenge active</span>
+      <span>🌱 Health: 92%</span>
+    </div>
+  </div>
+
+  <div class="group-card">
+    <div class="group-header">
+      <div class="group-icon">🎮</div>
+      <div>
+        <div class="group-name">Game Developers</div>
+        <div class="group-members">89 members</div>
+      </div>
+    </div>
+    <div class="group-activity">Creating amazing gaming experiences</div>
+    <div class="group-stats">
+      <span>🎨 5 projects in progress</span>
+      <span>💡 Showcase Friday</span>
+    </div>
+  </div>
+</div>
+
+<!-- Profile -->
+<div class="profile-container" id="profile">
+  <div class="profile-header">
+    <img src="https://i.pravatar.cc/150?img=30" class="profile-avatar" alt="Your Profile">
+    <div class="profile-name">Rajveer Basak</div>
+    <div class="profile-bio">Building amazing things ✨ | Tech enthusiast 💻 | Coffee lover ☕</div>
+    <div class="profile-stats">
+      <div class="stat">
+        <span class="stat-value">127</span>
+        <span class="stat-label">Posts</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">2.4K</span>
+        <span class="stat-label">Followers</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">892</span>
+        <span class="stat-label">Following</span>
+      </div>
+    </div>
+    <button class="profile-btn">Edit Profile</button>
+  </div>
+  <div class="profile-grid">
+    <div class="profile-grid-item"><img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&h=300&fit=crop" alt="Post"></div>
+    <div class="profile-grid-item"><img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=300&h=300&fit=crop" alt="Post"></div>
+    <div class="profile-grid-item"><img src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=300&h=300&fit=crop" alt="Post"></div>
+    <div class="profile-grid-item"><img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=300&h=300&fit=crop" alt="Post"></div>
+    <div class="profile-grid-item"><img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=300&h=300&fit=crop" alt="Post"></div>
+    <div class="profile-grid-item"><img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=300&h=300&fit=crop" alt="Post"></div>
+  </div>
+</div>
+
+<!-- Bottom Navigation -->
+<nav class="bottom-nav">
+  <button class="nav-item active" onclick="switchTab('feed')">
+    <span class="nav-icon">🏠</span>
+    <span class="nav-label">Home</span>
+  </button>
+  <button class="nav-item" onclick="switchTab('messages')">
+    <span class="nav-icon">💬</span>
+    <span class="nav-label">Messages</span>
+  </button>
+  <button class="nav-item" onclick="switchTab('groups')">
+    <span class="nav-icon">👥</span>
+    <span class="nav-label">Groups</span>
+  </button>
+  <button class="nav-item" onclick="switchTab('profile')">
+    <span class="nav-icon">👤</span>
+    <span class="nav-label">Profile</span>
+  </button>
+</nav>
+
+<script>
+function switchTab(tab) {
+  // Hide all containers
+  document.getElementById('feed').style.display = 'none';
+  document.getElementById('messages').classList.remove('active');
+  document.getElementById('groups').classList.remove('active');
+  document.getElementById('profile').classList.remove('active');
   
-  <script>
-    var sphereData = {
-      commons: "<h1>🌍 The Commons</h1><p class=\"subtitle\">Public discourse with authenticity and constructive debate</p><div class=\"post\"><h3>Sarah Chen <span class=\"badge\">🏆 Climate Expert</span></h3><p>New research shows renewable energy adoption is accelerating faster than predicted. Here is why this matters for policy makers and what we can learn from early adopters...</p></div><div class=\"post\"><h3>Marcus Johnson</h3><p>The psychology behind why we procrastinate is not about laziness—it is about emotional regulation. When we avoid tasks, we are often avoiding the negative feelings associated with them.</p></div><div class=\"post\"><h3>Dr. Lisa Park <span class=\"badge\">🏆 Neuroscience</span></h3><p>Fascinating new study on how social media affects dopamine pathways. The results challenge everything we thought we knew about digital addiction.</p></div>",
-      
-      tribes: "<h1>👥 Tribes</h1><p class=\"subtitle\">Your micro-communities (5-150 members)</p><div class=\"tribe-card\"><h3>🚀 Indie Makers</h3><p><strong>47 members</strong> • Building products that matter</p><p>🔥 12 active discussions</p><p>📅 Meetup tomorrow at 7pm</p></div><div class=\"tribe-card\"><h3>📚 Book Club</h3><p><strong>23 members</strong> • Deep reading, deeper conversations</p><p>📖 Currently reading: Atomic Habits</p><p>💬 8 new comments</p></div><div class=\"tribe-card\"><h3>🧘 Mindful Living</h3><p><strong>31 members</strong> • Mental health and wellness</p><p>🎯 Weekly challenge active</p><p>🌱 Community health: 92%</p></div><div class=\"tribe-card\"><h3>🎮 Game Developers</h3><p><strong>89 members</strong> • Creating amazing games</p><p>🎨 5 projects in progress</p><p>💡 Weekly showcase Friday</p></div>",
-      
-      vault: "<h1>🔒 Vault</h1><p class=\"subtitle\">Zero-knowledge encrypted conversations</p><div class=\"info-box\">🔐 End-to-end encrypted • Messages auto-delete in 24h</div><div class=\"message received\"><p>Hey! Are we still on for coffee later?</p></div><div class=\"message sent\"><p>Absolutely! The new place on 5th street at 3pm?</p></div><div class=\"message received\"><p>Perfect! I will bring those book recommendations 📚</p></div><div class=\"message sent\"><p>Awesome! Cannot wait to hear about your new project 🚀</p></div><div class=\"message received\"><p>See you then! 🎉</p></div>",
-      
-      canvas: "<h1>🎨 Canvas</h1><p class=\"subtitle\">Raw, authentic, creative expression</p><div class=\"canvas-post\"><img src=\"https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=600&fit=crop\" alt=\"Mountain sunrise\"><p><strong>Lily Park</strong> • Morning hike before work. No filter, no perfection, just grateful for this moment 🌄</p></div><div class=\"canvas-post\"><img src=\"https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=1200&h=600&fit=crop\" alt=\"Beach sunset\"><p><strong>You + Friends</strong> • Our summer adventures 2024 🌊☀️ Collaborative memory from our beach trip!</p></div><div class=\"canvas-post\"><img src=\"https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=1200&h=600&fit=crop\" alt=\"Ocean waves\"><p><strong>Marcus</strong> • Sometimes you just need to disconnect and breathe. Raw moment from today 💙</p></div>"
-    };
-    
-    function showSphere(sphereId) {
-      var buttons = document.querySelectorAll('.sphere');
-      buttons.forEach(function(btn) {
-        btn.classList.remove('active');
-      });
-      event.target.classList.add('active');
-      
-      var contentDiv = document.getElementById('content');
-      contentDiv.innerHTML = sphereData[sphereId];
-    }
-    
-    document.getElementById('content').innerHTML = sphereData.commons;
-    
-    console.log('🎉 Circles app loaded successfully!');
-  </script>
+  // Hide stories for non-feed tabs
+  document.getElementById('stories').style.display = tab === 'feed' ? 'block' : 'none';
+  
+  // Show selected container
+  if (tab === 'feed') {
+    document.getElementById('feed').style.display = 'block';
+  } else {
+    document.getElementById(tab).classList.add('active');
+  }
+  
+  // Update nav active state
+  document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+  event.target.closest('.nav-item').classList.add('active');
+}
+
+function toggleLike(btn) {
+  if (btn.textContent === '🤍') {
+    btn.textContent = '❤️';
+    btn.classList.add('liked');
+  } else {
+    btn.textContent = '🤍';
+    btn.classList.remove('liked');
+  }
+}
+
+console.log('✨ Circles - Professional Social Network loaded!');
+</script>
+
 </body>
 </html>
